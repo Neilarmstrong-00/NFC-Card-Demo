@@ -351,7 +351,7 @@
     }
 
     .brand-footer img {
-      height: 32px;
+      height: 48px; /* Increased logo size */
       object-fit: contain;
       opacity: 0.85;
       transition: opacity 0.3s ease;
@@ -384,8 +384,15 @@
       transition: all 0.2s ease;
     }
 
+    .contact-info a.name-link {
+      color: rgba(241, 245, 249, 0.7); /* Same as normal text color */
+      text-decoration: underline;
+      text-decoration-color: rgba(241, 245, 249, 0.3);
+    }
+
     .contact-info a:hover {
       color: #fff;
+      text-decoration-color: #fff;
     }
   </style>
 </head>
@@ -472,7 +479,7 @@
     <div class="contact-info">
       <span>Prathemesh Ingle: <a href="tel:+919518781351">+91 95187 81351</a></span>
       <span style="opacity: 0.5">|</span>
-      <span><a href="https://portfolio-nilove.vercel.app/" target="_blank">Nilove Mandal</a>: <a href="tel:+919307474959">+91 93074 74959</a></span>
+      <span><a href="https://portfolio-nilove.vercel.app/" target="_blank" class="name-link">Nilove Mandal</a>: <a href="tel:+919307474959">+91 93074 74959</a></span>
     </div>
     <p>&copy; 2026 Robo Solution. All Rights Reserved.</p>
   </div>
@@ -593,6 +600,7 @@
         // Single finger touch - drag rotate
         if (e.target.closest('.card-perspective')) {
           isDragging = true;
+          hasMovedDuringDrag = false;
           const touch = e.touches[0];
           previousMousePosition = { x: touch.clientX, y: touch.clientY };
         }
@@ -615,6 +623,10 @@
           x: touch.clientX - previousMousePosition.x,
           y: touch.clientY - previousMousePosition.y
         };
+        
+        if (Math.abs(deltaMove.x) > 2 || Math.abs(deltaMove.y) > 2) {
+          hasMovedDuringDrag = true;
+        }
 
         e.preventDefault(); // Prevent page scroll when rotating card
 
