@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,12 +10,13 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@400;600;700&display=swap" rel="stylesheet">
-  
+
   <style>
     :root {
       --bg-dark: #0f172a;
       --accent: #d4af37;
-      --edge-color: #d4af37; /* Seamless Saffron Gold core edge */
+      --edge-color: #d4af37;
+      /* Seamless Saffron Gold core edge */
     }
 
     * {
@@ -61,35 +63,40 @@
       animation: float 20s infinite ease-in-out alternate;
     }
 
-    .leaf1 { 
-      top: 5%; 
-      left: 5%; 
-      width: 250px; 
+    .leaf1 {
+      top: 5%;
+      left: 5%;
+      width: 250px;
       filter: blur(8px);
-      animation-duration: 25s; 
+      animation-duration: 25s;
     }
-    
-    .leaf2 { 
-      top: 50%; 
-      right: 2%; 
-      width: 300px; 
+
+    .leaf2 {
+      top: 50%;
+      right: 2%;
+      width: 300px;
       filter: blur(12px);
-      animation-duration: 30s; 
-      animation-delay: -5s; 
+      animation-duration: 30s;
+      animation-delay: -5s;
     }
-    
-    .leaf3 { 
-      bottom: -5%; 
-      left: 20%; 
-      width: 200px; 
+
+    .leaf3 {
+      bottom: -5%;
+      left: 20%;
+      width: 200px;
       filter: blur(6px);
-      animation-duration: 22s; 
-      animation-delay: -12s; 
+      animation-duration: 22s;
+      animation-delay: -12s;
     }
 
     @keyframes float {
-      0% { transform: translate(0, 0) rotate(0deg) scale(1); }
-      100% { transform: translate(30px, -50px) rotate(15deg) scale(1.1); }
+      0% {
+        transform: translate(0, 0) rotate(0deg) scale(1);
+      }
+
+      100% {
+        transform: translate(30px, -50px) rotate(15deg) scale(1.1);
+      }
     }
 
     .viewer-container {
@@ -106,7 +113,8 @@
     .card-perspective {
       perspective: 1500px;
       width: 90vw;
-      max-width: 650px; /* Increased size for desktop */
+      max-width: 650px;
+      /* Increased size for desktop */
       aspect-ratio: 3.5 / 2;
       position: relative;
       cursor: grab;
@@ -135,7 +143,8 @@
     /* Card face and edge base styling */
     .face {
       position: absolute;
-      backface-visibility: hidden; /* Fixes blurriness on some browsers */
+      backface-visibility: hidden;
+      /* Fixes blurriness on some browsers */
       overflow: hidden;
       border-radius: 28px;
       width: 100%;
@@ -149,7 +158,7 @@
     .card-edge {
       position: absolute;
       inset: 0;
-      border-radius: 28px;
+      border-radius: 40px;
       background: var(--edge-color);
       /* Removed semi-transparent border to ensure pure seamless gold color */
       pointer-events: none;
@@ -157,13 +166,14 @@
       height: 100%;
     }
 
-    .face-front img, .face-back img {
+    .face-front img,
+    .face-back img {
       width: 100%;
       height: 100%;
       object-fit: cover;
       pointer-events: none;
       display: block;
-      border-radius: 24px;
+      border-radius: 40px;
       /* Removed auto image-rendering to allow high quality scaling */
     }
 
@@ -191,11 +201,11 @@
       transition: opacity 0.2s ease, transform 0.2s ease;
       z-index: 1000;
       border: 1px solid rgba(212, 175, 55, 0.3);
-      box-shadow: 0 10px 25px rgba(0,0,0,0.6);
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.6);
       white-space: nowrap;
       letter-spacing: 0.5px;
     }
-    
+
     .custom-tooltip.visible {
       opacity: 1;
       transform: translateY(0) translateX(-50%);
@@ -207,8 +217,10 @@
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
-      width: 22.85%; /* 0.8 inches out of 3.5 inches */
-      height: 40%;   /* 0.8 inches out of 2.0 inches */
+      width: 22.85%;
+      /* 0.8 inches out of 3.5 inches */
+      height: 40%;
+      /* 0.8 inches out of 2.0 inches */
       z-index: 5;
       background: transparent;
       cursor: pointer;
@@ -217,7 +229,8 @@
 
     /* Controls & Instructions */
     .controls {
-      margin-top: 100px; /* Pushed further downward */
+      margin-top: 100px;
+      /* Pushed further downward */
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -279,6 +292,7 @@
     }
   </style>
 </head>
+
 <body>
 
   <!-- Background Effects -->
@@ -295,11 +309,11 @@
   </div>
 
   <div class="viewer-container">
-    
+
     <!-- 3D Card Viewport -->
     <div class="card-perspective" id="cardContainer">
       <div class="card-box" id="cardBox">
-        
+
         <!-- 3D Edge layers (More layers for perfectly solid corners, spacing 0.5px) -->
         <div class="card-edge" style="transform: translateZ(-3.5px);"></div>
         <div class="card-edge" style="transform: translateZ(-3.0px);"></div>
@@ -322,7 +336,7 @@
           <span class="fallback-text">Save front.png in img/ folder</span>
           <img src="img/front.png" alt="Card Front" onerror="this.style.opacity='0'">
         </div>
-        
+
         <!-- Card Back -->
         <div class="face face-back">
           <span class="fallback-text">Save back.png in img/ folder</span>
@@ -336,7 +350,10 @@
     <!-- Controls -->
     <div class="controls">
       <button class="flip-btn" id="flipBtn">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/></svg>
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+          stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67" />
+        </svg>
         Spin 180°
       </button>
       <span class="instruction">
@@ -361,9 +378,9 @@
     let isDragging = false;
     let hasMovedDuringDrag = false;
     let previousMousePosition = { x: 0, y: 0 };
-    
+
     // 3D Zoom variables (Using scale instead of Z-translation for sharper images)
-    let zoomScale = 1.0; 
+    let zoomScale = 1.0;
     let initialDistance = 0;
     let startZoomScale = 1.0;
 
@@ -371,7 +388,7 @@
     function updateCardTransform(transition = 'none') {
       card.style.transition = transition;
       card.style.transform = `rotateX(${currentX}deg) rotateY(${currentY}deg)`;
-      
+
       container.style.transition = transition;
       container.style.transform = `scale(${zoomScale})`;
 
@@ -380,16 +397,16 @@
         const speed = parseFloat(layer.getAttribute('data-speed'));
         const radY = currentY * (Math.PI / 180);
         const radX = currentX * (Math.PI / 180);
-        
+
         // Use Math.sin to create smooth oscillation relative to the card's spin
         const xOffset = Math.sin(radY) * speed;
         const yOffset = Math.sin(radX) * speed;
-        
+
         layer.style.transition = transition;
         layer.style.transform = `translate(${xOffset}px, ${yOffset}px)`;
       });
     }
-    
+
     updateCardTransform();
 
     // --- MOUSE INTERACTIONS ---
@@ -401,7 +418,7 @@
 
     document.addEventListener('mousemove', (e) => {
       if (!isDragging) return;
-      
+
       const deltaMove = {
         x: e.clientX - previousMousePosition.x,
         y: e.clientY - previousMousePosition.y
@@ -413,7 +430,7 @@
 
       currentY += deltaMove.x * 0.4; // Spin Y
       currentX -= deltaMove.y * 0.4; // Pitch X
-      
+
       // Limit pitch to prevent upside-down control confusion
       currentX = Math.max(-75, Math.min(75, currentX));
 
@@ -428,14 +445,14 @@
     // Prevent accidental QR link click while dragging and handle custom tooltip
     const qrLink = document.getElementById('qrLink');
     const qrTooltip = document.getElementById('qrTooltip');
-    
+
     if (qrLink) {
       qrLink.addEventListener('click', (e) => {
         if (hasMovedDuringDrag) {
           e.preventDefault();
         }
       });
-      
+
       if (qrTooltip) {
         // Track mouse to position tooltip
         qrLink.addEventListener('mousemove', (e) => {
@@ -443,12 +460,12 @@
           qrTooltip.style.left = e.clientX + 'px';
           qrTooltip.style.top = (e.clientY - 40) + 'px'; // 40px above cursor
         });
-        
+
         // Hide tooltip when leaving
         qrLink.addEventListener('mouseleave', () => {
           qrTooltip.classList.remove('visible');
         });
-        
+
         // Hide tooltip on touch to prevent it getting stuck on mobile
         qrLink.addEventListener('touchstart', () => {
           qrTooltip.classList.remove('visible');
@@ -502,7 +519,7 @@
           e.touches[0].clientY - e.touches[1].clientY
         );
         const factor = dist / initialDistance;
-        
+
         // Increased Zoom range
         zoomScale = Math.max(0.4, Math.min(3.5, startZoomScale * factor));
         updateCardTransform();
@@ -533,4 +550,5 @@
     });
   </script>
 </body>
+
 </html>
