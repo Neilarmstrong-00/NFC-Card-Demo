@@ -5,6 +5,14 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>3D NFC Card Viewer</title>
+  <meta name="description" content="Interactive 3D Digital NFC Business Card Viewer">
+  <meta name="theme-color" content="#1e293b">
+  
+  <!-- Open Graph / Social Media Meta Tags -->
+  <meta property="og:title" content="Premium 3D NFC Card">
+  <meta property="og:description" content="View and interact with this digital business card in full 3D.">
+  <meta property="og:type" content="website">
+
   <link rel="icon" type="image/png" href="img/favicon.png">
   <!-- Premium Font -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -27,6 +35,8 @@
 
     body {
       font-family: 'Lexend', sans-serif;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
       /* Premium attractive background */
       background: radial-gradient(circle at 50% 50%, #1e293b 0%, #020617 100%);
       color: #f1f5f9;
@@ -136,6 +146,7 @@
       width: 100%;
       height: 100%;
       transform-style: preserve-3d;
+      will-change: transform;
       box-shadow: 0 40px 80px -15px rgba(0, 0, 0, 0.9);
       border-radius: 28px;
     }
@@ -341,7 +352,7 @@
         <div class="face face-back">
           <span class="fallback-text">Save back.png in img/ folder</span>
           <img src="img/back.png" alt="Card Back" onerror="this.style.opacity='0'">
-          <a href="https://hexacards.com/SHIVA-SAWARKAR96" target="_blank" class="qr-link" id="qrLink"></a>
+          <a href="https://hexacards.com/SHIVA-SAWARKAR96" target="_blank" class="qr-link" id="qrLink" aria-label="Visit QR profile"></a>
         </div>
 
       </div>
