@@ -46,7 +46,8 @@
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      overflow: hidden;
+      overflow-x: hidden;
+      overflow-y: auto;
       height: 100dvh;
       padding: 15px;
       position: relative;
@@ -110,6 +111,18 @@
       }
     }
 
+    .split-layout {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      height: 100%;
+      gap: 60px;
+      z-index: 1;
+      padding: 0 20px;
+    }
+
     .viewer-container {
       display: flex;
       flex-direction: column;
@@ -117,15 +130,13 @@
       justify-content: center;
       width: 100%;
       height: 100%;
-      z-index: 1;
     }
 
     /* 3D Viewport container */
     .card-perspective {
       perspective: 1500px;
       width: 90vw;
-      max-width: 650px;
-      /* Increased size for desktop */
+      max-width: 600px; /* Slightly reduced to fit side-by-side */
       aspect-ratio: 3.5 / 2;
       position: relative;
       cursor: grab;
@@ -135,6 +146,11 @@
       justify-content: center;
       transform-style: preserve-3d;
       will-change: transform;
+    }
+
+    .card-perspective.vertical {
+      aspect-ratio: 2 / 3.5;
+      max-width: 340px; /* Vertically scaled */
     }
 
     .card-perspective:active {
@@ -229,13 +245,16 @@
       left: 50%;
       transform: translate(-50%, -50%);
       width: 22.85%;
-      /* 0.8 inches out of 3.5 inches */
       height: 40%;
-      /* 0.8 inches out of 2.0 inches */
       z-index: 5;
       background: transparent;
       cursor: pointer;
       -webkit-user-drag: none;
+    }
+
+    .qr-link.vertical {
+      width: 40%;
+      height: 22.85%;
     }
 
     /* Controls & Instructions */
@@ -396,13 +415,26 @@
     }
     
     /* Mobile Responsiveness */
+    @media (max-width: 1024px) {
+      .split-layout {
+        flex-direction: column;
+        overflow-y: auto;
+        padding-top: 100px;
+        padding-bottom: 120px;
+        height: auto;
+        justify-content: flex-start;
+      }
+      body {
+        height: auto;
+      }
+      .controls {
+        margin-top: 30px;
+      }
+    }
+
     @media (max-width: 768px) {
       :root {
         --card-radius: 24px;
-      }
-      
-      .controls {
-        margin-top: 50px;
       }
       
       .brand-header {
@@ -411,6 +443,10 @@
       
       .brand-footer {
         bottom: 15px;
+        position: fixed;
+        background: rgba(15, 23, 42, 0.8);
+        backdrop-filter: blur(10px);
+        padding-top: 10px;
       }
       
       .brand-header a {
@@ -425,9 +461,6 @@
     
     /* Small Mobile Responsiveness (e.g., iPhone SE) */
     @media (max-height: 700px) {
-      .controls {
-        margin-top: 30px;
-      }
       .brand-footer img {
         height: 32px;
       }
@@ -458,59 +491,93 @@
     </div>
   </div>
 
-  <div class="viewer-container">
+  <div class="split-layout">
+    <!-- Horizontal Card -->
+    <div class="viewer-container">
+      <div class="card-perspective horizontal" data-card-id="horizontal">
+        <div class="card-box">
+          <div class="card-edge" style="transform: translateZ(-3.5px);"></div>
+          <div class="card-edge" style="transform: translateZ(-3.0px);"></div>
+          <div class="card-edge" style="transform: translateZ(-2.5px);"></div>
+          <div class="card-edge" style="transform: translateZ(-2.0px);"></div>
+          <div class="card-edge" style="transform: translateZ(-1.5px);"></div>
+          <div class="card-edge" style="transform: translateZ(-1.0px);"></div>
+          <div class="card-edge" style="transform: translateZ(-0.5px);"></div>
+          <div class="card-edge" style="transform: translateZ(0px);"></div>
+          <div class="card-edge" style="transform: translateZ(0.5px);"></div>
+          <div class="card-edge" style="transform: translateZ(1.0px);"></div>
+          <div class="card-edge" style="transform: translateZ(1.5px);"></div>
+          <div class="card-edge" style="transform: translateZ(2.0px);"></div>
+          <div class="card-edge" style="transform: translateZ(2.5px);"></div>
+          <div class="card-edge" style="transform: translateZ(3.0px);"></div>
+          <div class="card-edge" style="transform: translateZ(3.5px);"></div>
 
-    <!-- 3D Card Viewport -->
-    <div class="card-perspective" id="cardContainer">
-      <div class="card-box" id="cardBox">
-
-        <!-- 3D Edge layers (More layers for perfectly solid corners, spacing 0.5px) -->
-        <div class="card-edge" style="transform: translateZ(-3.5px);"></div>
-        <div class="card-edge" style="transform: translateZ(-3.0px);"></div>
-        <div class="card-edge" style="transform: translateZ(-2.5px);"></div>
-        <div class="card-edge" style="transform: translateZ(-2.0px);"></div>
-        <div class="card-edge" style="transform: translateZ(-1.5px);"></div>
-        <div class="card-edge" style="transform: translateZ(-1.0px);"></div>
-        <div class="card-edge" style="transform: translateZ(-0.5px);"></div>
-        <div class="card-edge" style="transform: translateZ(0px);"></div>
-        <div class="card-edge" style="transform: translateZ(0.5px);"></div>
-        <div class="card-edge" style="transform: translateZ(1.0px);"></div>
-        <div class="card-edge" style="transform: translateZ(1.5px);"></div>
-        <div class="card-edge" style="transform: translateZ(2.0px);"></div>
-        <div class="card-edge" style="transform: translateZ(2.5px);"></div>
-        <div class="card-edge" style="transform: translateZ(3.0px);"></div>
-        <div class="card-edge" style="transform: translateZ(3.5px);"></div>
-
-        <!-- Card Front -->
-        <div class="face face-front">
-          <span class="fallback-text">Save front.png in img/ folder</span>
-          <img src="img/front.png" alt="Card Front" onerror="this.style.opacity='0'">
+          <div class="face face-front">
+            <span class="fallback-text">Save front.png in img/ folder</span>
+            <img src="img/front.png" alt="Card Front" onerror="this.style.opacity='0'">
+          </div>
+          <div class="face face-back">
+            <span class="fallback-text">Save back.png in img/ folder</span>
+            <img src="img/back.png" alt="Card Back" onerror="this.style.opacity='0'">
+            <a href="https://hexacards.com/SHIVA-SAWARKAR96" target="_blank" class="qr-link" aria-label="Visit QR profile"></a>
+          </div>
         </div>
-
-        <!-- Card Back -->
-        <div class="face face-back">
-          <span class="fallback-text">Save back.png in img/ folder</span>
-          <img src="img/back.png" alt="Card Back" onerror="this.style.opacity='0'">
-          <a href="https://hexacards.com/SHIVA-SAWARKAR96" target="_blank" class="qr-link" id="qrLink" aria-label="Visit QR profile"></a>
-        </div>
-
+      </div>
+      <div class="controls">
+        <button class="flip-btn">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67" />
+          </svg> Spin 180°
+        </button>
+        <span class="instruction">
+          Drag / Swipe to revolve<br>
+          Pinch / Scroll to Zoom
+        </span>
       </div>
     </div>
 
-    <!-- Controls -->
-    <div class="controls">
-      <button class="flip-btn" id="flipBtn">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
-          stroke-linecap="round" stroke-linejoin="round">
-          <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67" />
-        </svg>
-        Spin 180°
-      </button>
-      <span class="instruction">
-        Drag / Swipe card to revolve in full 3D<br>
-        Pinch (mobile) / Scroll (laptop) to Zoom<br>
-        Tap or click the QR code on the back to view profile
-      </span>
+    <!-- Vertical Card -->
+    <div class="viewer-container">
+      <div class="card-perspective vertical" data-card-id="vertical">
+        <div class="card-box">
+          <div class="card-edge" style="transform: translateZ(-3.5px);"></div>
+          <div class="card-edge" style="transform: translateZ(-3.0px);"></div>
+          <div class="card-edge" style="transform: translateZ(-2.5px);"></div>
+          <div class="card-edge" style="transform: translateZ(-2.0px);"></div>
+          <div class="card-edge" style="transform: translateZ(-1.5px);"></div>
+          <div class="card-edge" style="transform: translateZ(-1.0px);"></div>
+          <div class="card-edge" style="transform: translateZ(-0.5px);"></div>
+          <div class="card-edge" style="transform: translateZ(0px);"></div>
+          <div class="card-edge" style="transform: translateZ(0.5px);"></div>
+          <div class="card-edge" style="transform: translateZ(1.0px);"></div>
+          <div class="card-edge" style="transform: translateZ(1.5px);"></div>
+          <div class="card-edge" style="transform: translateZ(2.0px);"></div>
+          <div class="card-edge" style="transform: translateZ(2.5px);"></div>
+          <div class="card-edge" style="transform: translateZ(3.0px);"></div>
+          <div class="card-edge" style="transform: translateZ(3.5px);"></div>
+
+          <div class="face face-front">
+            <span class="fallback-text">Save v-front.png in img/ folder</span>
+            <img src="img/v-front.png" alt="Vertical Card Front" onerror="this.style.opacity='0'">
+          </div>
+          <div class="face face-back">
+            <span class="fallback-text">Save v-back.png in img/ folder</span>
+            <img src="img/v-back.png" alt="Vertical Card Back" onerror="this.style.opacity='0'">
+            <a href="https://hexacards.com/SHIVA-SAWARKAR96" target="_blank" class="qr-link vertical" aria-label="Visit QR profile"></a>
+          </div>
+        </div>
+      </div>
+      <div class="controls">
+        <button class="flip-btn">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67" />
+          </svg> Spin 180°
+        </button>
+        <span class="instruction">
+          Drag / Swipe to revolve<br>
+          Pinch / Scroll to Zoom
+        </span>
+      </div>
     </div>
   </div>
 
@@ -529,191 +596,212 @@
   <div class="custom-tooltip" id="qrTooltip">Click to visit the QR</div>
 
   <script>
-    const container = document.getElementById('cardContainer');
-    const card = document.getElementById('cardBox');
-    const flipBtn = document.getElementById('flipBtn');
-    const parallaxLayers = document.querySelectorAll('.parallax-layer');
+    class CardController {
+      constructor(container) {
+        this.container = container;
+        this.card = container.querySelector('.card-box');
+        this.flipBtn = container.parentElement.querySelector('.flip-btn');
+        this.qrLink = container.querySelector('.qr-link');
+        
+        this.currentX = 15;
+        this.currentY = -25;
+        this.zoomScale = 1.0;
+        this.startZoomScale = 1.0;
+        this.initialDistance = 0;
+        
+        this.isDragging = false;
+        this.hasMovedDuringDrag = false;
+        this.previousMousePosition = { x: 0, y: 0 };
+        
+        this.init();
+      }
 
-    let currentX = 15; // default starting pitch (slightly angled)
-    let currentY = -25; // default starting yaw (slightly angled)
-    let isDragging = false;
-    let hasMovedDuringDrag = false;
-    let previousMousePosition = { x: 0, y: 0 };
+      updateTransform(transition = 'none') {
+        this.card.style.transition = transition;
+        this.card.style.transform = `rotateX(${this.currentX}deg) rotateY(${this.currentY}deg)`;
 
-    // 3D Zoom variables (Using scale instead of Z-translation for sharper images)
-    let zoomScale = 1.0;
-    let initialDistance = 0;
-    let startZoomScale = 1.0;
+        this.container.style.transition = transition;
+        this.container.style.transform = `scale(${this.zoomScale})`;
+      }
 
-    // Apply starting orientation and zoom
-    function updateCardTransform(transition = 'none') {
-      card.style.transition = transition;
-      card.style.transform = `rotateX(${currentX}deg) rotateY(${currentY}deg)`;
+      init() {
+        this.updateTransform();
 
-      container.style.transition = transition;
-      container.style.transform = `scale(${zoomScale})`;
+        // Flip button
+        this.flipBtn.addEventListener('click', () => {
+          this.currentY += 180;
+          this.updateTransform('transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275)');
+        });
 
-      // Update background parallax based on card rotation
-      parallaxLayers.forEach(layer => {
-        const speed = parseFloat(layer.getAttribute('data-speed'));
-        const radY = currentY * (Math.PI / 180);
-        const radX = currentX * (Math.PI / 180);
+        // Mouse Drag
+        this.container.addEventListener('mousedown', (e) => {
+          this.isDragging = true;
+          this.hasMovedDuringDrag = false;
+          this.previousMousePosition = { x: e.clientX, y: e.clientY };
+        });
 
-        // Use Math.sin to create smooth oscillation relative to the card's spin
-        const xOffset = Math.sin(radY) * speed;
-        const yOffset = Math.sin(radX) * speed;
-
-        layer.style.transition = transition;
-        layer.style.transform = `translate(${xOffset}px, ${yOffset}px)`;
-      });
+        // QR Link protection
+        if (this.qrLink) {
+          this.qrLink.addEventListener('click', (e) => {
+            if (this.hasMovedDuringDrag) {
+              e.preventDefault();
+            }
+          });
+        }
+      }
     }
 
-    updateCardTransform();
-
-    // --- MOUSE INTERACTIONS ---
-    container.addEventListener('mousedown', (e) => {
-      isDragging = true;
-      hasMovedDuringDrag = false;
-      previousMousePosition = { x: e.clientX, y: e.clientY };
+    const controllers = [];
+    document.querySelectorAll('.card-perspective').forEach(el => {
+      controllers.push(new CardController(el));
     });
 
+    const qrTooltip = document.getElementById('qrTooltip');
+    document.querySelectorAll('.qr-link').forEach(link => {
+      if (qrTooltip) {
+        link.addEventListener('mousemove', (e) => {
+          qrTooltip.classList.add('visible');
+          qrTooltip.style.left = e.clientX + 'px';
+          qrTooltip.style.top = (e.clientY - 40) + 'px';
+        });
+        link.addEventListener('mouseleave', () => {
+          qrTooltip.classList.remove('visible');
+        });
+        link.addEventListener('touchstart', () => {
+          qrTooltip.classList.remove('visible');
+        });
+      }
+    });
+
+    // Global document handlers for mousemove, mouseup
     document.addEventListener('mousemove', (e) => {
-      if (!isDragging) return;
+      const activeCtrl = controllers.find(c => c.isDragging);
+      if (!activeCtrl) return;
 
       const deltaMove = {
-        x: e.clientX - previousMousePosition.x,
-        y: e.clientY - previousMousePosition.y
+        x: e.clientX - activeCtrl.previousMousePosition.x,
+        y: e.clientY - activeCtrl.previousMousePosition.y
       };
 
       if (Math.abs(deltaMove.x) > 2 || Math.abs(deltaMove.y) > 2) {
-        hasMovedDuringDrag = true;
+        activeCtrl.hasMovedDuringDrag = true;
       }
 
-      currentY += deltaMove.x * 0.4; // Spin Y
-      currentX -= deltaMove.y * 0.4; // Pitch X
+      activeCtrl.currentY += deltaMove.x * 0.4;
+      activeCtrl.currentX -= deltaMove.y * 0.4;
+      activeCtrl.currentX = Math.max(-75, Math.min(75, activeCtrl.currentX));
 
-      // Limit pitch to prevent upside-down control confusion
-      currentX = Math.max(-75, Math.min(75, currentX));
-
-      updateCardTransform();
-      previousMousePosition = { x: e.clientX, y: e.clientY };
+      activeCtrl.updateTransform();
+      activeCtrl.previousMousePosition = { x: e.clientX, y: e.clientY };
+      
+      // Update Parallax based on active card
+      updateParallax(activeCtrl.currentX, activeCtrl.currentY);
     });
 
     document.addEventListener('mouseup', () => {
-      isDragging = false;
+      controllers.forEach(c => c.isDragging = false);
     });
 
-    // Prevent accidental QR link click while dragging and handle custom tooltip
-    const qrLink = document.getElementById('qrLink');
-    const qrTooltip = document.getElementById('qrTooltip');
-
-    if (qrLink) {
-      qrLink.addEventListener('click', (e) => {
-        if (hasMovedDuringDrag) {
-          e.preventDefault();
-        }
-      });
-
-      if (qrTooltip) {
-        // Track mouse to position tooltip
-        qrLink.addEventListener('mousemove', (e) => {
-          qrTooltip.classList.add('visible');
-          qrTooltip.style.left = e.clientX + 'px';
-          qrTooltip.style.top = (e.clientY - 40) + 'px'; // 40px above cursor
-        });
-
-        // Hide tooltip when leaving
-        qrLink.addEventListener('mouseleave', () => {
-          qrTooltip.classList.remove('visible');
-        });
-
-        // Hide tooltip on touch to prevent it getting stuck on mobile
-        qrLink.addEventListener('touchstart', () => {
-          qrTooltip.classList.remove('visible');
-        });
-      }
-    }
-
-    // --- TOUCH INTERACTIONS (Mobile Rotate & Pinch Zoom) ---
-    // Added to the whole body so pinch zoom works even if slightly outside the container
+    // Touch Handlers
     document.addEventListener('touchstart', (e) => {
       if (e.touches.length === 1) {
-        // Single finger touch - drag rotate
-        if (e.target.closest('.card-perspective')) {
-          isDragging = true;
-          hasMovedDuringDrag = false;
-          const touch = e.touches[0];
-          previousMousePosition = { x: touch.clientX, y: touch.clientY };
+        const perspective = e.target.closest('.card-perspective');
+        if (perspective) {
+          const ctrl = controllers.find(c => c.container === perspective);
+          if (ctrl) {
+            ctrl.isDragging = true;
+            ctrl.hasMovedDuringDrag = false;
+            ctrl.previousMousePosition = { x: e.touches[0].clientX, y: e.touches[0].clientY };
+          }
         }
       } else if (e.touches.length === 2) {
-        // Multi finger touch - pinch zoom initialization
-        isDragging = false;
-        initialDistance = Math.hypot(
-          e.touches[0].clientX - e.touches[1].clientX,
-          e.touches[0].clientY - e.touches[1].clientY
-        );
-        startZoomScale = zoomScale;
+        // Pinch zoom
+        const perspective = e.target.closest('.card-perspective');
+        if (perspective) {
+          const ctrl = controllers.find(c => c.container === perspective);
+          if (ctrl) {
+            controllers.forEach(c => c.isDragging = false); // Stop drag
+            ctrl.isDragging = true; // Mark as target for zoom
+            ctrl.initialDistance = Math.hypot(
+              e.touches[0].clientX - e.touches[1].clientX,
+              e.touches[0].clientY - e.touches[1].clientY
+            );
+            ctrl.startZoomScale = ctrl.zoomScale;
+          }
+        }
       }
-    });
+    }, { passive: false });
 
     document.addEventListener('touchmove', (e) => {
-      if (e.touches.length === 1 && isDragging) {
-        // Drag rotate handler
+      const activeCtrl = controllers.find(c => c.isDragging);
+      if (!activeCtrl) return;
+
+      if (e.touches.length === 1) {
         const touch = e.touches[0];
         const deltaMove = {
-          x: touch.clientX - previousMousePosition.x,
-          y: touch.clientY - previousMousePosition.y
+          x: touch.clientX - activeCtrl.previousMousePosition.x,
+          y: touch.clientY - activeCtrl.previousMousePosition.y
         };
         
         if (Math.abs(deltaMove.x) > 2 || Math.abs(deltaMove.y) > 2) {
-          hasMovedDuringDrag = true;
+          activeCtrl.hasMovedDuringDrag = true;
         }
 
-        e.preventDefault(); // Prevent page scroll when rotating card
+        e.preventDefault();
 
-        currentY += deltaMove.x * 0.45;
-        currentX -= deltaMove.y * 0.45;
-        currentX = Math.max(-75, Math.min(75, currentX));
+        activeCtrl.currentY += deltaMove.x * 0.45;
+        activeCtrl.currentX -= deltaMove.y * 0.45;
+        activeCtrl.currentX = Math.max(-75, Math.min(75, activeCtrl.currentX));
 
-        updateCardTransform();
-        previousMousePosition = { x: touch.clientX, y: touch.clientY };
+        activeCtrl.updateTransform();
+        activeCtrl.previousMousePosition = { x: touch.clientX, y: touch.clientY };
+        updateParallax(activeCtrl.currentX, activeCtrl.currentY);
+        
       } else if (e.touches.length === 2) {
-        // Pinch zoom handler (moves card on 3D Z-axis instead of 2D scaling)
         e.preventDefault();
         const dist = Math.hypot(
           e.touches[0].clientX - e.touches[1].clientX,
           e.touches[0].clientY - e.touches[1].clientY
         );
-        const factor = dist / initialDistance;
-
-        // Increased Zoom range
-        zoomScale = Math.max(0.4, Math.min(3.5, startZoomScale * factor));
-        updateCardTransform();
+        const factor = dist / activeCtrl.initialDistance;
+        activeCtrl.zoomScale = Math.max(0.4, Math.min(3.5, activeCtrl.startZoomScale * factor));
+        activeCtrl.updateTransform();
       }
     }, { passive: false });
 
     document.addEventListener('touchend', () => {
-      isDragging = false;
+      controllers.forEach(c => c.isDragging = false);
     });
 
-    // --- SCROLL WHEEL ZOOM (Desktop Laptop) ---
+    // Wheel (Desktop Zoom)
     window.addEventListener('wheel', (e) => {
-      // Allow zooming from anywhere in the document for better UX
-      e.preventDefault(); // Prevent page scrolling
-      const zoomSpeed = 0.15; // Increased scroll speed
+      const perspective = e.target.closest('.card-perspective');
+      if (!perspective) return;
+      const ctrl = controllers.find(c => c.container === perspective);
+      if (!ctrl) return;
+
+      e.preventDefault();
+      const zoomSpeed = 0.15;
       if (e.deltaY < 0) {
-        zoomScale = Math.min(3.5, zoomScale + zoomSpeed); // Zoom in closer
+        ctrl.zoomScale = Math.min(3.5, ctrl.zoomScale + zoomSpeed);
       } else {
-        zoomScale = Math.max(0.4, zoomScale - zoomSpeed); // Zoom out further
+        ctrl.zoomScale = Math.max(0.4, ctrl.zoomScale - zoomSpeed);
       }
-      updateCardTransform('transform 0.1s ease-out');
+      ctrl.updateTransform('transform 0.1s ease-out');
     }, { passive: false });
 
-    // --- SPIN BUTTON ---
-    flipBtn.addEventListener('click', () => {
-      currentY += 180; // Add half-circle spin
-      updateCardTransform('transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275)');
-    });
+    // Parallax update
+    const parallaxLayers = document.querySelectorAll('.parallax-layer');
+    function updateParallax(x, y) {
+      parallaxLayers.forEach(layer => {
+        const speed = parseFloat(layer.getAttribute('data-speed'));
+        const radY = y * (Math.PI / 180);
+        const radX = x * (Math.PI / 180);
+        const xOffset = Math.sin(radY) * speed;
+        const yOffset = Math.sin(radX) * speed;
+        layer.style.transform = `translate(${xOffset}px, ${yOffset}px)`;
+      });
+    }
   </script>
 </body>
 
